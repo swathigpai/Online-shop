@@ -1,9 +1,10 @@
 <?php
 	session_start();
-	if(isset($_SESSION['uid'])){
-		header('location:profile.php');
+	if(!isset($_SESSION['uid'])){
+	header('Location:index.php');
 	}
  ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,32 +14,40 @@
 	<link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick-theme.css"/>
 	<link rel="stylesheet" type="text/css" href="assets/bootstrap-3.3.6-dist/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
-
+	<link rel="shortcut icon" href="assets/images/fav.png">
 </head>
 <body>
-
-
-	<div class="navbar navbar-default navbar-fixed-top" id="topnav">
+	<div class="navbar navbar-default navbar-fixed-top"  id="topnav">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a href="index.php" class="navbar-brand">Amaclone</a>
 			</div>
 
 			<ul class="nav navbar-nav">
+
 				<li style="width:300px;left:10px;top:10px;"><input type="text" class="form-control" id="search" name=""></li>
 				<li style="top:10px;left:20px;"><button class="btn btn-primary" id="search_btn" name=""><span class='glyphicon glyphicon-search'></span></button></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
-				<li id='shoppingcart'><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span>Cart <span class="badge">0</span>	</a>
+				<li id='shoppingcart'><a id="carticon" href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span>Cart <span class="badge">2</span>	</a>
 					<div class="dropdown-menu" style="width: 400px;">
 						<div class="panel panel-success">
 							<div class="panel-heading">
 								<div class="row">
+									<div class="col-md-3"><strong>S. No.</strong></div>
+									<div class="col-md-3"><strong>Product Image</strong></div>
+									<div class="col-md-3"><strong>Product Name</strong></div>
+									<div class="col-md-3"><strong>Price in $</strong></div>
+								</div>
+								<hr>
+								<div id="cartmenu">
+								<!--<div class="row">
 									<div class="col-md-3">S. No.</div>
 									<div class="col-md-3">Product Image</div>
 									<div class="col-md-3">Product Name</div>
 									<div class="col-md-3">Price in $</div>
+								</div>-->
 								</div>
 							</div>
 							<div class="panel-body"></div>
@@ -46,30 +55,20 @@
 						</div>
 					</div>
 				</li>
-				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>Sign In</a>
-					<ul class="dropdown-menu">
-					<div style="width: 300px;">
-						<div class="panel panel-primary">
-							<div class="panel-heading">Login</div>
-							<div class="panel-heading">
-								<label for="email">Email</label>
-								<input type="email" class="form-control" id="email">
-								<label for="email">Password</label>
-								<input type="password" class="form-control" id="password">
-								<p><br></p>
-								<a href="#" style="color: white;list-style-type: none;">Forgot Password?</a>
-								<input type="submit" class="btn btn-success" style="float: right;bottom:12px;" id="login" value="Login" name="">
-							</div>
-							<div class="panel-footer" id="e_msg"></div>
-						</div>
-					</div>
+				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>Hello, <?php echo $_SESSION['uname']; ?></a>
+				<ul class="dropdown-menu">
+					<li><a href="cart.php"><span class="glyphicon glyphicon-shopping-cart-large"></span> Cart</a></li>
+					<li><a href="#">Change Password</a></li>
+					<li><a href="logout.php">Logout</a></li>
 				</ul>
 
-				<li><a href="customer_registration.php">Sign Up</a></li>
-			</ul>
+				</li>
+
+				</ul>
+
 		</div>
 	</div>
-		<br><br><br>
+	<br><br><br><br><br><br>
 	<!-- Slider Begins -->
 
 	 <div class="one-time">
@@ -81,6 +80,9 @@
 	<!-- Slider ends -->
 
 	<br>
+
+
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-1"></div>
@@ -103,14 +105,14 @@
 				</div>-->
 			</div>
 			<div class="col-md-8">
-			<div class="row">
+				<div class="row">
 					<div class="col-md-12" id="cartmsg">
 
 					</div>
 				</div>
 				<div class="panel panel-info">
 					<div class="panel-heading text-center">--Featured Products--
-						<div class='pull-right'>
+							<div class='pull-right'>
 								Sort: &nbsp;&nbsp;&nbsp;<a href="#" id='price_sort'>Price</a> | <a href="#" id='pop_sort'>Popularity</a>
 							</div>
 					</div>
@@ -139,6 +141,7 @@
 					</ul>
 				</center>
 			</div>
+
 
 			<!-- Modal -->
 
@@ -173,7 +176,6 @@
 	<script src="assets/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 	<script src="main.js"></script>
 </body>
-
 <div class="foot"><footer>
 <p> Brought To You By <a href="https://code-projects.org/">Code-Projects</a></p>
 </footer></div>

@@ -1,82 +1,86 @@
 <?php
-    session_start();
-    require 'connection.php';
-    if(!isset($_SESSION['email'])){
-        header('location: login.php');
-    }
-    $user_id=$_SESSION['id'];
-    $user_products_query="select it.id,it.name,it.price from users_items ut inner join items it on it.id=ut.item_id where ut.user_id='$user_id'";
-    $user_products_result=mysqli_query($con,$user_products_query) or die(mysqli_error($con));
-    $no_of_user_products= mysqli_num_rows($user_products_result);
-    $sum=0;
-    if($no_of_user_products==0){
-        //echo "Add items to cart first.";
-    ?>
-        <script>
-        window.alert("No items in the cart!!");
-        </script>
-    <?php
-    }else{
-        while($row=mysqli_fetch_array($user_products_result)){
-            $sum=$sum+$row['price']; 
-       }
-    }
-?>
+	session_start();
+	if(!isset($_SESSION['uid'])){
+	header('Location:index.php');
+	}
+ ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="shortcut icon" href="img/lifestyleStore.png" />
-        <title>Projectworlds Store</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- latest compiled and minified CSS -->
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css">
-        <!-- jquery library -->
-        <script type="text/javascript" src="bootstrap/js/jquery-3.2.1.min.js"></script>
-        <!-- Latest compiled and minified javascript -->
-        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-        <!-- External CSS -->
-        <link rel="stylesheet" href="css/style.css" type="text/css">
-    </head>
-    <body>
-        <div>
-            <?php 
-               require 'header.php';
-            ?>
-            <br>
-            <div class="container">
-                <table class="table table-bordered table-striped">
-                    <tbody>
-                        <tr>
-                            <th>Item Number</th><th>Item Name</th><th>Price</th><th></th>
-                        </tr>
-                       <?php 
-                        $user_products_result=mysqli_query($con,$user_products_query) or die(mysqli_error($con));
-                        $no_of_user_products= mysqli_num_rows($user_products_result);
-                        $counter=1;
-                       while($row=mysqli_fetch_array($user_products_result)){
-                           
-                         ?>
-                        <tr>
-                            <th><?php echo $counter ?></th><th><?php echo $row['name']?></th><th><?php echo $row['price']?></th>
-                            <th><a href='cart_remove.php?id=<?php echo $row['id'] ?>'>Remove</a></th>
-                        </tr>
-                       <?php $counter=$counter+1;}?>
-                        <tr>
-                            <th></th><th>Total</th><th>Rs <?php echo $sum;?>/-</th><th><a href="success.php?id=<?php echo $user_id?>" class="btn btn-primary">Confirm Order</a></th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <br><br><br><br><br><br><br><br><br><br>
-            <footer class="footer">
-               <div class="container">
-                <center>
-                   <p>Copyright &copy <a href="https://projectworlds.in">Projectworlds</a> Store. All Rights Reserved.</p>
-                   <p>This website is developed by Yugesh Verma</p>
-               </center>
-               </div>
-           </footer>
-        </div>
-    </body>
+<head>
+	<meta charset="utf-8">
+	<title>Amaclone</title>
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap-3.3.6-dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div class="navbar navbar-default navbar-fixed-top" id="topnav">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.php" class="navbar-brand">Amaclone</a>
+			</div>
+
+
+		</div>
+	</div>
+	<p><br><br></p>
+	<p><br><br></p>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+			<div class="row">
+				<div class="col-md-12" id="cart_msg"></div>
+			</div>
+				<div class="panel panel-primary text-center">
+					<div class="panel-heading">Cart Checkout</div>
+					<div class="panel-body"></div>
+					<div class="row">
+						<div class="col-md-2"><b>Action</b></div>
+						<div class="col-md-2"><b>Product Image</b></div>
+						<div class="col-md-2"><b>Product Name</b></div>
+						<div class="col-md-2"><b>Product Price</b></div>
+						<div class="col-md-2"><b>Quantity</b></div>
+						<div class="col-md-2"><b>Price in $</b></div>
+					</div>
+					<br><br>
+					<div id='cartdetail'>
+					<!--<div class="row">
+						<div class="col-md-2"><a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+						<a href="#" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span></a>
+						</div>
+						<div class="col-md-2"><img src="assets/prod_images/tshirt.JPG" width="60px" height="60px"></div>
+						<div class="col-md-2">Tshirt</div>
+						<div class="col-md-2">$700</div>
+						<div class="col-md-2"><input class="form-control" type="text" size="10px" value='1'></div>
+						<div class="col-md-2"><input class="form-control" type="text" size="10px" value='700'></div>
+					</div>-->
+					</div>
+					<!--<div class="row">
+						<div class="col-md-8"></div>
+						<div class="col-md-4">
+							<b>Total: $500000</b>
+						</div>
+					</div>-->
+					<div class="panel-footer">
+
+					</div>
+				</div>
+				<button class='btn btn-success btn-lg pull-right' id='checkout_btn' data-toggle="modal" data-target="#myModal">Checkout</button>
+			</div>
+
+			<div class="col-md-2"></div>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+	<script src="assets/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+	<script src="main.js"></script>
+</body>
+<div class="foot"><footer>
+<p> Brought To You By <a href="https://code-projects.org/">Code-Projects</a></p>
+</footer></div>
+<style> .foot{text-align: center;}
+</style>
 </html>
